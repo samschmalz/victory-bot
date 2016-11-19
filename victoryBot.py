@@ -5,7 +5,7 @@ import random
 
 client = discord.Client()
 
-victoryID = 0 
+victoryID = 0
 serv = 0
 
 @client.event
@@ -46,8 +46,16 @@ async def on_message(message):
         elif rand == 2:
             msg = await client.send_message(message.channel, "! == not, <3 == love... do you not love me, " + message.author.mention + "?")
         elif rand == 3:
-            lauren = serv.get_member_named("AIRHORN SOLUTIONS#6723")
-            msg = await client.send_message(message.channel, "My love belongs to " + lauren.mention)
-        else:
-            return
+            love = serv.get_member_named("AIRHORN SOLUTIONS#6723")
+            msg = await client.send_message(message.channel, "My love belongs to " + love.mention)
+    if message.content.startswith(tag + "highfive"):
+        mess = message.content.split(" ")
+        mntn = message.mentions
+        for m in mntn:
+            msg = await client.send_message(m, "SMACK")
+            msg2 = await client.send_message(message.channel, message.author.mention + " high-fived " + m.mention)
+        msg3 = await client.send_message(message.author, "SMACK")
+
+#def randomize():
+
 

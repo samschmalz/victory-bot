@@ -5,6 +5,8 @@ import discord
 import sqlite3
 
 client = discord.Client()
+db_connector = sqlite3.connect("birb.db")
+c = db_connector.cursor()
 
 key = "~"
 
@@ -27,9 +29,16 @@ async def on_message(message):
         msg_broken = msg.split(" ")
         for word in msg_broken:
             if word[-2:] == "++":
-                tmp = await client.send_message(message.channel, word[:-2] + " has gained a point")
+                score_user = word[:-2]
+                user = (score_user,)
+                c.execute("SELECT * FROM scores WHERE player=?", user)
+                user_score = c.fetchone()
+                if user_score == None:
+                    c.execute("INSERT INTO scores VALUES((?), 0)", user)
+                tmp = await client.send_message(message.channel, score_user + " has gained a point")
             elif word[-2:] == "--":
-                tmp = await client.send_message(message.channel, word[:-2] + " has lost a point")
+                score_user = word[:-2]
+                tmp = await client.send_message(message.channel, score_user + " has lost a point")
     #condition for the "fuck you"
     if msg[0] == "!":
         tmp = await client.send_message(message.channel, "Fuck you, " + msg[1:])

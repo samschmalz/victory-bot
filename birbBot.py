@@ -5,7 +5,7 @@ import discord
 import sqlite3
 
 client = discord.Client()
-db_connector = sqlite3.connect("birb.db")
+db_connector = sqlite3.connect("birb_db.sqlite")
 c = db_connector.cursor()
 
 key = "~"
@@ -33,12 +33,33 @@ async def on_message(message):
                 user = (score_user,)
                 c.execute("SELECT * FROM scores WHERE player=?", user)
                 user_score = c.fetchone()
+                score_val = 0
                 if user_score == None:
                     c.execute("INSERT INTO scores VALUES((?), 0)", user)
-                tmp = await client.send_message(message.channel, score_user + " has gained a point")
+                    db_connector.commit()
+                else:
+                    score_val = user_score[1]
+                score_val += 1
+                score_tuple = score_val, score_user
+                c.execute("UPDATE scores SET score=? WHERE player=?", score_tuple)
+                db_connector.commit()
+                tmp = await client.send_message(message.channel, score_user + " has gained a point for " + str(score_val) + " points")
             elif word[-2:] == "--":
                 score_user = word[:-2]
-                tmp = await client.send_message(message.channel, score_user + " has lost a point")
+                user = (score_user,)
+                c.execute("SELECT * FROM scores WHERE player=?", user)
+                user_score = c.fetchone()
+                score_val = 0
+                if user_score == None:
+                    c.execute("INSERT INTO scores VALUES((?), 0)", user)
+                    db_connector.commit()
+                else:
+                    score_val = user_score[1]
+                score_val -= 1
+                score_tuple = score_val, score_user
+                c.execute("UPDATE scores SET score=? WHERE player=?", score_tuple)
+                db_connector.commit()
+                tmp = await client.send_message(message.channel, score_user + " has lost a point for " + str(score_val) + " points")
     #condition for the "fuck you"
     if msg[0] == "!":
         tmp = await client.send_message(message.channel, "Fuck you, " + msg[1:])

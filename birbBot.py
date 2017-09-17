@@ -66,18 +66,26 @@ async def on_message(message):
         tmp = await client.send_message(message.channel, "Fuck you, " + msg[1:])
     if msg.startswith(key + "victory"):
         msg_short = msg.split(" ", 1)[1]
-    if msg.startswith("/r"):
+    if msg.startswith("/roll"):
         roll_split = msg.split(" ", 1)
-        if roll_split.count != 2:
+        if len(roll_split) != 2:
             await client.send_message(message.channel, "usage: /r *x*d*y* [+ modifiers] [#comment]")
         else:
             roll_split = roll_split[1]
-            roll_comment_split = roll_split.split("#", 1)
+            if "-a" in roll_split:
+                advantage = roll_split.split("-a")
+                advantage = [item.strip() for item in advantage]
+            elif "-d" in roll_split:
+                print("-d")
+            else:
+                print("neither")
+            '''roll_comment_split = roll_split.split("#", 1)
             roll_params = roll_comment_split[0]
             if roll_comment_split.count == 2:
                 roll_comment_split = " #" + roll_comment_split[1]
             else:
                 roll_comment_split = ""
+            '''
 
 token_file = open("token.txt", "r")
 token = token_file.readline().rstrip("\r\n")
@@ -85,12 +93,10 @@ token_file.close()
 
 #diceroll
 #returns an array of dice roll values
-#roll_count: an int determining how many dice to roll
-#dice_value: an int determining the size of the dice
-def diceroll(roll_count, dice_value):
+#roll_params: a list of roll parameters in the form xdy
+def diceroll(roll_params):
     roll_array = []
-    for roll in range(roll_count):
-        roll_array.append(random.randint(0, dice_value))
+    
     return roll_array
 
 db_connector.close()

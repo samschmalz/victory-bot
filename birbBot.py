@@ -83,7 +83,15 @@ token_file = open("token.txt", "r")
 token = token_file.readline().rstrip("\r\n")
 token_file.close()
 
-#def diceroll(roll_params):
-    
+#diceroll
+#returns an array of dice roll values
+#roll_count: an int determining how many dice to roll
+#dice_value: an int determining the size of the dice
+def diceroll(roll_count, dice_value):
+    roll_array = []
+    for roll in range(roll_count):
+        roll_array.append(random.randint(0, dice_value))
+    return roll_array
+
 db_connector.close()
 client.run(token)

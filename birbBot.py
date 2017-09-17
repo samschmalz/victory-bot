@@ -3,6 +3,7 @@
 import asyncio
 import discord
 import sqlite3
+import random
 
 client = discord.Client()
 db_connector = sqlite3.connect("birb_db.sqlite")
@@ -65,9 +66,24 @@ async def on_message(message):
         tmp = await client.send_message(message.channel, "Fuck you, " + msg[1:])
     if msg.startswith(key + "victory"):
         msg_short = msg.split(" ", 1)[1]
+    if msg.startswith("/r"):
+        roll_split = msg.split(" ", 1)
+        if roll_split.count != 2:
+            await client.send_message(message.channel, "usage: /r *x*d*y* [+ modifiers] [#comment]")
+        else:
+            roll_split = roll_split[1]
+            roll_comment_split = roll_split.split("#", 1)
+            roll_params = roll_comment_split[0]
+            if roll_comment_split.count == 2:
+                roll_comment_split = " #" + roll_comment_split[1]
+            else:
+                roll_comment_split = ""
 
 token_file = open("token.txt", "r")
 token = token_file.readline().rstrip("\r\n")
 token_file.close()
 
+#def diceroll(roll_params):
+    
+db_connector.close()
 client.run(token)

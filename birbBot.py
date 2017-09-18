@@ -69,23 +69,28 @@ async def on_message(message):
     if msg.startswith("/roll"):
         roll_split = msg.split(" ", 1)
         if len(roll_split) != 2:
-            await client.send_message(message.channel, "usage: /r *x*d*y* [+ modifiers] [#comment]")
+            await client.send_message(message.channel, "usage: /r *x*d*y* [+ modifiers] [+*w*d*z* [+ modifiers]] [-ad] [#comment]")
         else:
             roll_split = roll_split[1]
             if "-a" in roll_split:
                 advantage = roll_split.split("-a")
                 advantage = [item.strip() for item in advantage]
+                roll_list = advantage[0].split('+')
+                first_roll = diceroll(roll_list)
+                second_roll = diceroll(roll_list)
+                if sum(first_roll) > sum(second_roll):
+                    await client.send_message(message.channel, message.author + "'s rolls: " + print_rolls(first_roll))
+                elif sum(first_roll) < sum(second_roll):
+                    await client.send_message(message.channel, message.author + "'s rolls: " + print_rolls(second_roll))
+                else:
+                    if 20 in second_roll:
+                        await client.send_message(message.channel, message.author + "'s rolls: " + print_rolls(second_roll))
+                    else:
+                        await client.send_message(message.channel, message.author + "'s rolls: " + print_rolls(first_roll))
             elif "-d" in roll_split:
                 print("-d")
             else:
                 print("neither")
-            '''roll_comment_split = roll_split.split("#", 1)
-            roll_params = roll_comment_split[0]
-            if roll_comment_split.count == 2:
-                roll_comment_split = " #" + roll_comment_split[1]
-            else:
-                roll_comment_split = ""
-            '''
 
 token_file = open("token.txt", "r")
 token = token_file.readline().rstrip("\r\n")
@@ -96,8 +101,23 @@ token_file.close()
 #roll_params: a list of roll parameters in the form xdy
 def diceroll(roll_params):
     roll_array = []
-    
+    for param in roll_params:
+        if 'd' in param:
+            p = param.split("d")
+            dice_count = int(p[0].strip())
+            dice_value = int(p[1].strip())
+            for roll in range(dice_count):
+                roll_array.append(random.randint(0, dice_value))
+        else:
+            roll_array.append(int(param.strip()))
     return roll_array
+
+def print_rolls(roll_list):
+    output = ""
+    for item in roll_list[:-1]:
+        output += item + " + "
+    output += roll_list[:-1] + " = " + sum(roll_list)
+    return output
 
 db_connector.close()
 client.run(token)

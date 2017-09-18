@@ -79,18 +79,23 @@ async def on_message(message):
                 first_roll = diceroll(roll_list)
                 second_roll = diceroll(roll_list)
                 if sum(first_roll) > sum(second_roll):
-                    await client.send_message(message.channel, message.author + "'s rolls: " + print_rolls(first_roll))
+                    await client.send_message(message.channel, '@' + str(message.author) + " 's rolls: " + print_rolls(first_roll))
                 elif sum(first_roll) < sum(second_roll):
-                    await client.send_message(message.channel, message.author + "'s rolls: " + print_rolls(second_roll))
+                    await client.send_message(message.channel, '@' + str(message.author) + " 's rolls: " + print_rolls(second_roll))
                 else:
                     if 20 in second_roll:
-                        await client.send_message(message.channel, message.author + "'s rolls: " + print_rolls(second_roll))
+                        await client.send_message(message.channel, '@' + str(message.author) + " 's rolls: " + print_rolls(second_roll))
                     else:
-                        await client.send_message(message.channel, message.author + "'s rolls: " + print_rolls(first_roll))
+                        await client.send_message(message.channel, '@' + str(message.author) + " 's rolls: " + print_rolls(first_roll))
             elif "-d" in roll_split:
                 print("-d")
             else:
-                print("neither")
+                comment_split = roll_split.split("#")
+                roll_list = comment_split[0].split('+')
+                roll_string = print_rolls(diceroll(roll_list))
+                if len(comment_split) == 2:
+                    roll_string += " " + comment_split[1]
+                await client.send_message(message.channel, message.author.mention + "'s rolls: " + roll_string)
 
 token_file = open("token.txt", "r")
 token = token_file.readline().rstrip("\r\n")
@@ -107,7 +112,7 @@ def diceroll(roll_params):
             dice_count = int(p[0].strip())
             dice_value = int(p[1].strip())
             for roll in range(dice_count):
-                roll_array.append(random.randint(0, dice_value))
+                roll_array.append(random.randint(1, dice_value))
         else:
             roll_array.append(int(param.strip()))
     return roll_array
@@ -115,8 +120,8 @@ def diceroll(roll_params):
 def print_rolls(roll_list):
     output = ""
     for item in roll_list[:-1]:
-        output += item + " + "
-    output += roll_list[:-1] + " = " + sum(roll_list)
+        output += str(item) + " + "
+    output += str(roll_list[-1]) + " = " + str(sum(roll_list))
     return output
 
 db_connector.close()

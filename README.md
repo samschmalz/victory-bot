@@ -8,3 +8,11 @@ This script requires the use of discord.py as well as SQLite3
 Current functionality:
 * add or remove points from users
 * issue a "fuck you" to a user
+* roll dice using /roll XdY
+
+To install requirements, use `pip install -r requirements.txt`
+
+To do:
+* finish up dice rolls for advantage and disadvantage
+* re-implement victories as in victoryBot.py
+* add error checking

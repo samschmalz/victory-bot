@@ -79,14 +79,14 @@ async def on_message(message):
                 first_roll = diceroll(roll_list)
                 second_roll = diceroll(roll_list)
                 if sum(first_roll) > sum(second_roll):
-                    await client.send_message(message.channel, '@' + str(message.author) + " 's rolls: " + print_rolls(first_roll))
+                    await client.send_message(message.channel, message.author.mention + " 's rolls: " + print_rolls(first_roll))
                 elif sum(first_roll) < sum(second_roll):
-                    await client.send_message(message.channel, '@' + str(message.author) + " 's rolls: " + print_rolls(second_roll))
+                    await client.send_message(message.channel, message.author.mention + " 's rolls: " + print_rolls(second_roll))
                 else:
                     if 20 in second_roll:
-                        await client.send_message(message.channel, '@' + str(message.author) + " 's rolls: " + print_rolls(second_roll))
+                        await client.send_message(message.channel, message.author.mention + " 's rolls: " + print_rolls(second_roll))
                     else:
-                        await client.send_message(message.channel, '@' + str(message.author) + " 's rolls: " + print_rolls(first_roll))
+                        await client.send_message(message.channel, message.author.mention + " 's rolls: " + print_rolls(first_roll))
             elif "-d" in roll_split:
                 print("-d")
             else:

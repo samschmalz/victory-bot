@@ -16,3 +16,13 @@ To do:
 * finish up dice rolls for advantage and disadvantage
 * re-implement victories as in victoryBot.py
 * add error checking
+
+
+To prepare your system to run this:
+1. Install virtualenv
+2. CD into the directory you want to work in (preferably the cloned git repo)
+3. run `virtualenv victoryBot -p python3`
+4. activate the virtual environment with `source victoryBot/bin/activate`
+5. Install required modules with `pip3 install -r requirements.txt`
+6. Run python as necessary
+7. To exit the virtualenv, use `deactivate`

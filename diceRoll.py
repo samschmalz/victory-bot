@@ -25,5 +25,17 @@ def parseRolls(roll_string):
     roll_array = []
     mod_array = []
     comment = ""
+    if '#' in roll_string:
+        roll_string, comment = roll_string.strip().split('#')
+    for item in roll_string.strip().split():
+        if 'd' in item and checkRoll(item):
+            roll_array.append(item)
+        elif item.isnumeric():
+            mod_array.add(item)
+        else:
+            continue
 
-    return tuple(roll_array, mod_array)
+    return tuple(roll_array, mod_array, comment)
+
+def checkRoll(param):
+    return True

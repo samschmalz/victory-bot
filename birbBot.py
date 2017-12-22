@@ -3,7 +3,7 @@
 import asyncio
 import discord
 import sqlite3
-import random
+from diceRoll import *
 
 client = discord.Client()
 db_connector = sqlite3.connect("birb_db.sqlite")

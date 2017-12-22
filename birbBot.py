@@ -101,22 +101,6 @@ token_file = open("token.txt", "r")
 token = token_file.readline().rstrip("\r\n")
 token_file.close()
 
-#diceroll
-#returns an array of dice roll values
-#roll_params: a list of roll parameters in the form xdy
-def diceroll(roll_params):
-    roll_array = []
-    for param in roll_params:
-        if 'd' in param:
-            p = param.split("d")
-            dice_count = int(p[0].strip())
-            dice_value = int(p[1].strip())
-            for roll in range(dice_count):
-                roll_array.append(random.randint(1, dice_value))
-        else:
-            roll_array.append(int(param.strip()))
-    return roll_array
-
 def print_rolls(roll_list):
     output = ""
     for item in roll_list[:-1]:

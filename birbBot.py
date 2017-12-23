@@ -73,20 +73,15 @@ async def on_message(message):
         else:
             roll_split = roll_split[1]
             if "-a" in roll_split:
-                advantage = roll_split.split("-a")
-                advantage = [item.strip() for item in advantage]
-                roll_list = advantage[0].split('+')
-                first_roll = diceroll(roll_list)
-                second_roll = diceroll(roll_list)
-                if sum(first_roll) > sum(second_roll):
-                    await client.send_message(message.channel, message.author.mention + " 's rolls: " + print_rolls(first_roll))
-                elif sum(first_roll) < sum(second_roll):
-                    await client.send_message(message.channel, message.author.mention + " 's rolls: " + print_rolls(second_roll))
-                else:
-                    if 20 in second_roll:
-                        await client.send_message(message.channel, message.author.mention + " 's rolls: " + print_rolls(second_roll))
-                    else:
-                        await client.send_message(message.channel, message.author.mention + " 's rolls: " + print_rolls(first_roll))
+                advantage = roll_split.split("-a")[1]
+                dice, mods, comm = parseRolls(advantage)
+                roll = max(diceroll(dice)[0], diceroll(dice)[0])
+                print_string = str(roll)
+                for m in mods:
+                    print_string += " + " + str(m)
+                print_string += " = " + str(roll + sum(mods))
+                print_string += comm
+                await client.send_mesage(message.channel, message.author.mention + "'s roll w/ advantage: " + print_string)
             elif "-d" in roll_split:
                 print("-d")
             else:

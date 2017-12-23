@@ -7,15 +7,9 @@ import random
 #roll_params: a list of roll parameters in the form xdy
 def diceroll(roll_params):
     roll_array = []
-    for param in roll_params:
-        if 'd' in param:
-            p = param.split("d")
-            dice_count = int(p[0].strip())
-            dice_value = int(p[1].strip())
-            for roll in range(dice_count):
-                roll_array.append(random.randint(1, dice_value))
-        else:
-            roll_array.append(int(param.strip()))
+    for r in roll_array:
+        num, die = r.strip().split('d')
+        roll_array.append(random.randint(1,die))
     return roll_array
 
 #parseRolls
@@ -35,13 +29,13 @@ def parseRolls(roll_string):
         else:
             continue
 
-    return tuple(roll_array, mod_array, comment)
+    return roll_array, mod_array, comment
 
 def checkRoll(param):
     if 'd' not in param:
         return False
     front, back = param.split('d',1)
-    if !front.isdigit() || !back.isdigit():
+    if not front.isdigit() or not back.isdigit():
         return False
 
     return True

@@ -67,9 +67,9 @@ async def on_message(message):
     if msg.startswith(key + "victory"):
         msg_short = msg.split(" ", 1)[1]
     if msg.startswith("/roll"):
-        roll_split = msg.split(" ", 1)
+        roll_split = msg.strip().split(" ", 1)
         if len(roll_split) != 2:
-            await client.send_message(message.channel, "usage: /r *x*d*y* [+ modifiers] [+*w*d*z* [+ modifiers]] [-ad] [#comment]")
+            await client.send_message(message.channel, "usage: /roll [-ad] *x*d*y* [+ modifiers] [+*w*d*z* [+ modifiers]] [#comment]")
         else:
             roll_split = roll_split[1]
             if "-a" in roll_split:
@@ -77,35 +77,27 @@ async def on_message(message):
                 dice, mods, comm = parseRolls(advantage)
                 roll_test = diceRoll(dice)
                 roll = max(diceRoll(dice)[0], diceRoll(dice)[0])
-                print_string = str(roll)
+                print_string = rollString([roll], mods, comm)
                 for m in mods:
                     print_string += " + " + str(m)
                 print_string += " = " + str(roll + sum(mods))
                 print_string += comm
                 await client.send_message(message.channel, message.author.mention + "'s roll w/ advantage: " + print_string)
             elif "-d" in roll_split:
-                dice, mods, comm = parseRolls(advantage)
-                roll = min(diceRoll(dice[0]), diceRoll(dice)[0])
-                print_string = rollString([roll], mods, comm)
+                disadvantage = roll_split.split("-d", 1)[1]
+                dice, mods, comm = parseRolls(disadvantage)
+                roll = min(diceRoll(dice)[0], diceRoll(dice)[0])
+                print_string = rollString([roll], mods, comm) #roll is in brackets to force it to act like an array of 1 item
                 await client.send_message(message.channel, message.author.mention + "'s roll w/ disadvantage: " + print_string)
             else:
-                comment_split = roll_split.split("#")
-                roll_list = comment_split[0].split('+')
-                roll_string = print_rolls(diceRoll(roll_list))
-                if len(comment_split) == 2:
-                    roll_string += " " + comment_split[1]
-                await client.send_message(message.channel, message.author.mention + "'s rolls: " + roll_string)
+                dice, mods, comm = parseRolls(roll_split)
+                rolls = diceRoll(dice)
+                print_string = rollString(rolls, mods, comm)
+                await client.send_message(message.channel, message.author.mention + "'s rolls: " + print_string)
 
 token_file = open("token.txt", "r")
 token = token_file.readline().rstrip("\r\n")
 token_file.close()
-
-def print_rolls(roll_list):
-    output = ""
-    for item in roll_list[:-1]:
-        output += str(item) + " + "
-    output += str(roll_list[-1]) + " = " + str(sum(roll_list))
-    return output
 
 db_connector.close()
 client.run(token)

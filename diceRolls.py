@@ -9,7 +9,9 @@ def diceRoll(roll_params):
     roll_array = []
     for r in roll_params:
         num, die = r.strip().split('d')
-        roll_array.append(random.randint(1,int(die)))
+        num = int(num)
+        for n in range(num):
+            roll_array.append(random.randint(1,int(die)))
     return roll_array
 
 #parseRolls
@@ -46,5 +48,7 @@ def rollString(rolls, mods, comm):
         result += " + " + str(r)
     for m in mods:
         result += " + " + str(m)
-    result += comm
+    result += " = " + str(sum(rolls) + sum(mods))
+    if len(comm) != 0:
+        result += " #" + comm
     return result

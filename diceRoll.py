@@ -38,4 +38,10 @@ def parseRolls(roll_string):
     return tuple(roll_array, mod_array, comment)
 
 def checkRoll(param):
+    if 'd' not in param:
+        return False
+    front, back = param.split('d',1)
+    if !front.isdigit() || !back.isdigit():
+        return False
+
     return True

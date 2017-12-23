@@ -3,7 +3,7 @@
 import asyncio
 import discord
 import sqlite3
-from diceRoll import *
+from diceRolls import *
 
 client = discord.Client()
 db_connector = sqlite3.connect("birb_db.sqlite")
@@ -75,19 +75,23 @@ async def on_message(message):
             if "-a" in roll_split:
                 advantage = roll_split.split("-a")[1]
                 dice, mods, comm = parseRolls(advantage)
-                roll = max(diceroll(dice)[0], diceroll(dice)[0])
+                roll_test = diceRoll(dice)
+                roll = max(diceRoll(dice)[0], diceRoll(dice)[0])
                 print_string = str(roll)
                 for m in mods:
                     print_string += " + " + str(m)
                 print_string += " = " + str(roll + sum(mods))
                 print_string += comm
-                await client.send_mesage(message.channel, message.author.mention + "'s roll w/ advantage: " + print_string)
+                await client.send_message(message.channel, message.author.mention + "'s roll w/ advantage: " + print_string)
             elif "-d" in roll_split:
-                print("-d")
+                dice, mods, comm = parseRolls(advantage)
+                roll = min(diceRoll(dice[0]), diceRoll(dice)[0])
+                print_string = rollString([roll], mods, comm)
+                await client.send_message(message.channel, message.author.mention + "'s roll w/ disadvantage: " + print_string)
             else:
                 comment_split = roll_split.split("#")
                 roll_list = comment_split[0].split('+')
-                roll_string = print_rolls(diceroll(roll_list))
+                roll_string = print_rolls(diceRoll(roll_list))
                 if len(comment_split) == 2:
                     roll_string += " " + comment_split[1]
                 await client.send_message(message.channel, message.author.mention + "'s rolls: " + roll_string)

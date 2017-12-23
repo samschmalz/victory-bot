@@ -5,11 +5,11 @@ import random
 #diceroll
 #returns an array of dice roll values
 #roll_params: a list of roll parameters in the form xdy
-def diceroll(roll_params):
+def diceRoll(roll_params):
     roll_array = []
-    for r in roll_array:
+    for r in roll_params:
         num, die = r.strip().split('d')
-        roll_array.append(random.randint(1,die))
+        roll_array.append(random.randint(1,int(die)))
     return roll_array
 
 #parseRolls
@@ -25,7 +25,7 @@ def parseRolls(roll_string):
         if 'd' in item and checkRoll(item):
             roll_array.append(item)
         elif item.isnumeric():
-            mod_array.add(item)
+            mod_array.append(int(item))
         else:
             continue
 
@@ -39,3 +39,12 @@ def checkRoll(param):
         return False
 
     return True
+
+def rollString(rolls, mods, comm):
+    result = str(rolls[0])
+    for r in rolls[1:]:
+        result += " + " + str(r)
+    for m in mods:
+        result += " + " + str(m)
+    result += comm
+    return result

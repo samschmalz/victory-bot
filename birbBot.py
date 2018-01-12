@@ -78,10 +78,6 @@ async def on_message(message):
                 roll_test = diceRoll(dice)
                 roll = max(diceRoll(dice)[0], diceRoll(dice)[0])
                 print_string = rollString([roll], mods, comm)
-                for m in mods:
-                    print_string += " + " + str(m)
-                print_string += " = " + str(roll + sum(mods))
-                print_string += comm
                 await client.send_message(message.channel, message.author.mention + "'s roll w/ advantage: " + print_string)
             elif "-d" in roll_split:
                 disadvantage = roll_split.split("-d", 1)[1]

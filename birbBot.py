@@ -95,5 +95,6 @@ token_file = open("token.txt", "r")
 token = token_file.readline().rstrip("\r\n")
 token_file.close()
 
+#making a comment to test pushing/pulling
 db_connector.close()
 client.run(token)

@@ -26,7 +26,7 @@ async def on_ready():
 @client.event
 async def on_message(message):
     msg = message.content
-    if msg[0] != "~":
+    if not msg.startswith("!!"):
         msg_broken = msg.split(" ")
         for word in msg_broken:
             if word[-2:] == "++":
@@ -65,9 +65,10 @@ async def on_message(message):
     if msg.startswith("!!you"):
         tmp_msg = msg.split(" ", 1)[1]
         await client.send_message(message.channel, "Fuck you, " + tmp_msg)
-    if msg.startswith(key + "victory"):
+    if msg.startswith("!!victory"):
         msg_short = msg.split(" ", 1)[1]
-    if msg.startswith(key + "roll"):
+        await client.send_message(message.channel, "This isn't quite ready yet")
+    if msg.startswith("!!roll"):
         roll_split = msg.strip().split(" ", 1)
         if len(roll_split) != 2:
             await client.send_message(message.channel, "usage: /roll [-ad] *x*d*y* [+ modifiers] [+*w*d*z* [+ modifiers]] [#comment]")

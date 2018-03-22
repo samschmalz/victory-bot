@@ -62,8 +62,9 @@ async def on_message(message):
                 db_connector.commit()
                 tmp = await client.send_message(message.channel, score_user + " has lost a point for " + str(score_val) + " points")
     #condition for the "fuck you"
-    #if msg[0] == "!":
-    #    tmp = await client.send_message(message.channel, "Fuck you, " + msg[1:])
+    if msg.startswith("!!you"):
+        tmp_msg = msg.split(" ", 1)[1]
+        await client.send_message(message.channel, "Fuck you, " + tmp_msg)
     if msg.startswith(key + "victory"):
         msg_short = msg.split(" ", 1)[1]
     if msg.startswith(key + "roll"):

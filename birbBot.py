@@ -66,12 +66,12 @@ async def on_message(message):
         tmp_msg = msg.split(" ", 1)[1]
         await client.send_message(message.channel, "Fuck you, " + tmp_msg)
     if msg.startswith("!!victory"):
-        msg_short = msg.split(" ", 1)[1]
+        #msg_short = msg.split(" ", 1)[1]
         await client.send_message(message.channel, "This isn't quite ready yet")
     if msg.startswith("!!roll"):
         roll_split = msg.strip().split(" ", 1)
         if len(roll_split) != 2:
-            await client.send_message(message.channel, "usage: /roll [-ad] *x*d*y* [+ modifiers] [+*w*d*z* [+ modifiers]] [#comment]")
+            await client.send_message(message.channel, "usage: !!roll [-ad] *x*d*y* [+ modifiers] [+*w*d*z* [+ modifiers]] [#comment]")
         else:
             roll_split = roll_split[1]
             if "-a" in roll_split:
